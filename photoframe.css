@@ -1,0 +1,7 @@
+.photoframe
+{
+	position: absolute;
+	width: 100%;
+	top: 25%;
+	display: none;
+}
