@@ -3,8 +3,8 @@
 file: pane.js
 description: Pane class and related functions
 
-version: 0.1-4
-last updated: 2010-10-07
+version: 0.3-1
+last updated: 2010-10-11
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -27,6 +27,8 @@ TOC
 2010-10-03 - v0.2-1 added makefns, global makePane function repository
 2010-10-07 - v0.2-1 added added hooks[], setHook() and removeHook()
 
+2010-10-11 - v0.3-1 rewrite of Pane class using new closure idiom
+
 */
 
 //  1. Constants & Config
@@ -34,135 +36,146 @@ TOC
 // Constants & Config ends
 
 //  2. Globals
-var nPanes = {}; // count of unnamed panes. used to auto-generate pane ids.
 var makefns = {}; // make functions
 // Globals ends
 
 //  3. Classes
 
-function Pane (type, id, paneStyle)
+function Pane (pane, type, id, style)
 {
+	if (!pane) pane = document.createElement('div');
+
+	var that = pane;
+	var display = 'block';
+	var hooks = null;
+
 	if (!type) type = 'pane';
-	this.type = type;
+	if (!pane.className) pane.className = type;
 
-	this.className = type;
-	this.display = 'block';
-	// this.style.position = 'relative';
+	if (!Pane.nPanes[type]) Pane.nPanes[type] = 0;
 
-	// hooks
-	this.hooks = null;
+	if (!id) id = type + ++(Pane.nPanes[type]);
+	if (!pane.id) pane.id = id;
 
-	if (!nPanes[this.type]) nPanes[this.type] = 0;
-
-	if (!id) id = this.type + ++(nPanes[this.type]);
-	this.id = id;
-
-	this.addChild = function (name, pane, type, id, style)
+	pane.which = function ()
 	{
-		this[name] = makePane(pane, type, id, style);
-		this.appendChild(this[name]);
+		return pane;
 	}
 
-	this.attach = function (parent)
+	pane.addChild = function (name, child)
 	{
-		if (this.parentElement)
-			this.detach();
-
-		parent.appendChild(this);
+		that[name] = child;
+		child.attach(pane);
 	}
 
-	this.detach = function ()
+	pane.attach = function (parent)
 	{
-		if (parent = this.parentElement)
-			parent.removeChild(this);
+		if (pane.parentElement)
+			pane.detach();
+
+		parent.appendChild(pane);
 	}
 
-	this.show = function ()
+	pane.detach = function ()
 	{
-		this.style.display = this.display;
+		if (parent = pane.parentElement)
+			parent.removeChild(pane);
 	}
 
-	this.hide = function ()
+	pane.show = function ()
 	{
-		this.style.display = 'none';
+		pane.style.display = display;
 	}
 
-	this.toString = function ()
+	pane.hide = function ()
 	{
-		return '[ ' + this.id + ' ]';
+		pane.style.display = 'none';
 	}
 
-	this.identify = function ()
+	pane.toString = function ()
+	{
+		return '[ ' + pane.id + ' ]';
+	}
+
+	pane.identify = function ()
 	{
 		txt = document.createElement('p');
 		txt.style.position = 'relative';
 		txt.style.margin = '0px';
 		txt.style.color = 'white';
 		txt.style.fontFamily = 'sans-serif';
-		txt.innerHTML = this.toString();
-		this.appendChild(txt);
+		txt.innerHTML = pane.toString();
+		pane.appendChild(txt);
 	}
 
-	this.resize = function (size)
+	pane.resize = function (size)
 	{
-		this.style.width = size.width + 'px'; // change from 'px' to a config'able unit
-		this.style.height = size.height + 'px'; // change from 'px' to a config'able unit
+		pane.style.width = size.width + 'px'; // change from 'px' to a config'able unit
+		pane.style.height = size.height + 'px'; // change from 'px' to a config'able unit
 	}
 
-	this.shiftX = function (x)
+	pane.shiftX = function (x)
 	{
-		newLeft = this.style.left.match(/^[-,+]?[0-9]*/);
+		newLeft = pane.style.left.match(/^[-,+]?[0-9]*/);
 		
 		newLeft = (newLeft[0] == '') ? x : eval(newLeft[0]) + x;
-		this.style.left = newLeft + 'px'; // change from 'px' to a config'able unit
+		pane.style.left = newLeft + 'px'; // change from 'px' to a config'able unit
 	}
 
-	this.shiftY = function (y)
+	pane.shiftY = function (y)
 	{
-		newTop = this.style.top.match(/^[-,+]?[0-9]*/);
+		newTop = pane.style.top.match(/^[-,+]?[0-9]*/);
 
 		newTop = (newTop == '') ? y : eval(newTop[0]) + y;
-		this.style.top = newTop + 'px'; // change from 'px' to a config'able unit
+		pane.style.top = newTop + 'px'; // change from 'px' to a config'able unit
 	}
 
-	this.moveToX = function (x)
+	pane.moveToX = function (x)
 	{
-		this.style.left = x.toFixed(0) + 'px'; // change from 'px' to a config'able unit
+		pane.style.left = x.toFixed(0) + 'px'; // change from 'px' to a config'able unit
 	}
 
-	this.moveToY = function (y)
+	pane.moveToY = function (y)
 	{
-		this.style.top = y.toFixed(0) + 'px'; // change from 'px' to a config'able unit
+		pane.style.top = y.toFixed(0) + 'px'; // change from 'px' to a config'able unit
 	}
 
-	this.setHook = function (name, func)
+	pane.setHook = function (name, func)
 	{
-		if (this.hooks == null) this.hooks = {}; // set up an object on first call
+		if (hooks == null) hooks = {}; // set up an object on first call
 
-		if ((typeof this.hooks[name] === 'undefined') || (this.hooks[name] != null))
-			this.hooks[name] = func;
+		if ((typeof hooks[name] === 'undefined') || (hooks[name] != null))
+			hooks[name] = func;
 		// this.addEventListener(name, this.hooks[name], true);
 	}
 
-	this.removeHook = function (name)
+	pane.removeHook = function (name)
 	{
-		if ((typeof this.hooks[name] !== 'undefined') && (this.hooks[name] != null))
-			this.hooks[name] = null;
+		if ((typeof hooks[name] !== 'undefined') && (hooks[name] != null))
+			hooks[name] = null;
 	}
+
+	pane.getHooks = function ()
+	{
+		return hooks;
+	}
+
+	pane.callHook = function (name)
+	{
+		if ((hooks) && (hooks[name]) && (hooks[name] != null))
+			hooks[name]();
+	}
+
+	return pane;
 }
+
+Pane.nPanes = {}; // counts number of panes of each type. used to set pane id's
 // Classes ends
 
 //  4. Functions
 function makePane (pane, type, id, paneStyle)
 {
-	if (!pane) pane = document.createElement('div');
-	// add checks to see is the div has already been made a pane
-
-	//if (!paneStyle) paneStyle = new PaneStyle();
-
-	Pane.call(pane, type, id, paneStyle);
-
-	return pane;
+	return new Pane(pane, type, id, paneStyle);
 }
 
 function newPane (kind, pane, type, id)

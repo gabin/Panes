@@ -3,8 +3,8 @@
 file: imgpane.js
 description: ImagePane Class
 
-version: 0.2-1
-last updated: 2010-10-06
+version: 0.3-1
+last updated: 2010-10-11
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -30,6 +30,8 @@ Revision History
 2010-10-03 - v0.2-1 moved interface functions to photoframe.js
 2010-10-06 - v0.2-1 added change () method
 
+2010-10-11 - v0.3-1 rewrite of ImgPane class using new closure idiom
+
 */
 //  1. Constants & Config
 var defImgPad = 200;
@@ -43,26 +45,29 @@ var defImgPad = 200;
 class: ImgPane
 description: Image Pane
 */
-function ImgPane (type, id, bgStyle, fgStyle)
+function ImgPane (pane, type, id, bgStyle, fgStyle)
 {
 	if (!type) type = 'imgpane';
-	Pane.call(this, type, id, bgStyle);
+	pane = new Pane(pane, type, id);
 
-	bgType = this.type + '-bg';
-	bgId = this.id + '-bg';
-	this.addChild('bg', null, bgType, bgId);
+	bgType = pane.className + '-bg';
+	bgId = pane.id + '-bg';
+	bg = new Pane(null, bgType, bgId, bgStyle);
+	pane.addChild('bg', bg);
 
-	this.img = document.createElement('img');
-	this.appendChild(this.img);
+	pane.img = document.createElement('img');
+	pane.appendChild(pane.img);
 
-	this.change = function (im)
+	pane.change = function (im)
 	{
-		im2 = this.img
-		this.removeChild(im2);
-		this.img = im;
-		this.appendChild(this.img);
+		im2 = pane.img
+		pane.removeChild(im2);
+		pane.img = im;
+		pane.appendChild(this.img);
 		return im2;
 	}
+
+	return pane;
 }
 // class ImgPane ends
 // Classes ends
@@ -70,11 +75,7 @@ function ImgPane (type, id, bgStyle, fgStyle)
 //  4. Functions
 function makeImgPane (pane, type, id, bgStyle, fgStyle)
 {
-	if (!pane) pane = document.createElement('div');
-
-	ImgPane.call(pane, type, id, bgStyle, fgStyle);
-
-	return pane;
+	return new ImgPane(pane, type, id, bgStyle, fgStyle);
 }
 
 // Functions ends

@@ -3,8 +3,8 @@
 file: photoframe.js
 description: unobtrusively adds photoframe functionality to an html page
 
-version: 0.1
-last updated: 2010-10-06
+version: 0.3
+last updated: 2010-10-11
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -33,146 +33,145 @@ Revision History
 2010-10-06 - v0.1 added Photoframe class
 2010-10-07 - v0.1 added jumpTo(), new photoframeSetup() and hook for shade()
 
+2010-10-07 - v0.3 rewrite of Photoframe class using new closure idiom
 */
 
 //  2. Globals
 var phrame;
-var thumbs = [];
-var srcs = [];
-var curim;
-var impn;
+var tms = [];
+var srs = [];
+// var curim;
+// var impn;
 
 var phrame;
 // Globals ends
 
 //  3. Classes
-function Photoframe (type, id, bgStyle)
+function Photoframe (pane, type, id, bgStyle)
 {
 	if (!type) type = 'photoframe';
-	Pane.call(this, type, id, bgStyle);
-
-	// these lines use impn and slbr default styles
-	this.impn = newPane('imgpane');
-	this.appendChild(this.impn);
-	this.slbr = newPane('slbrpane');
-	this.appendChild(this.slbr);
+	pane = new Pane(pane, type, id, bgStyle);
 
 	// use the following lines if photoframe.css is used to set styles for impn & slbr
 	//impnType = this.type + '-impn';
 	//impnId = this.id + '-impn';
-	//this.impn = newPane('imgpane', null, impnType, impnId);
 	//slbrType = this.type + '-slbr';
 	//slbrId = this.id + '-slbr';
-	//this.slbr = newPane('slbrpane', null, slbrType, slbrId);
+
+	// these lines use impn and slbr default styles
+	impn = newPane('imgpane');
+	pane.addChild('impn', impn);
+	slbr = newPane('slbrpane');
+	pane.addChild('slbr', slbr);
 
 	// data management
-	this.thumbs = [];
-	this.srcs = [];
-	this.cur = 0;
-	this.nextim = null;
-	this.previm = null;
-	this.linked = false;
+	var thumbs = [];
+	var srcs = [];
+	var cur = 0;
+	var nextim = null;
+	var previm = null;
+	var linked = false;
 
 
 	// change sub panes to visible so that this pane's visibility will control them
-	this.impn.show();
-	this.slbr.show();
+	pane.impn.show();
+	pane.slbr.show();
 
-	this.next = function ()
+	pane.next = function ()
 	{
-		if (!this.nextim) return; // not initialized
+		if (!nextim) return; // not initialized
 
 		// add checks to ensure image has loaded
 
-		this.previm = this.showImg(this.nextim);
-		this.cur = ++this.cur % this.srcs.length;
+		previm = pane.showImg(nextim);
+		cur = ++cur % srcs.length;
 
-		if (this.linked) this.syncSlBr();
+		if (linked) pane.syncSlBr();
 
 		// preload next image
-		next = (this.cur + 1) % this.srcs.length;
-		this.nextim = document.createElement('img');
-		this.nextim.src = this.srcs[next];
+		next = (cur + 1) % srcs.length;
+		nextim = document.createElement('img');
+		nextim.src = srcs[next];
 	}
 
-	this.prev = function ()
+	pane.prev = function ()
 	{
-		if (!this.previm) return; // not initialized
+		if (!previm) return; // not initialized
 
 		// add checks to ensure image has loaded
 
-		this.nextim = this.showImg(this.previm);
-		this.cur = (this.cur + this.srcs.length - 1) % this.srcs.length;
+		nextim = pane.showImg(previm);
+		cur = (cur + srcs.length - 1) % srcs.length;
 
-		if (this.linked) this.syncSlBr();
+		if (linked) pane.syncSlBr();
 
 		// preload prev image
-		prev = (this.cur + this.srcs.length - 1) % this.srcs.length;
-		this.previm = document.createElement('img');
-		this.previm.src = this.srcs[prev];
+		prev = (cur + srcs.length - 1) % srcs.length;
+		previm = document.createElement('img');
+		previm.src = srcs[prev];
 	}
 
-	this.jumpTo = function (index)
+	pane.jumpTo = function (index)
 	{
-		im = document.createElement('img');
-		im.src = this.srcs[index];
-		this.showImg(im);
+		if (index) cur = index;
 
-		this.cur = index;
+		im = document.createElement('img');
+		im.src = srcs[cur];
+		pane.showImg(im);
+
 
 		// sync slide browser
-		if (this.linked) this.syncSlBr();
+		if (linked) pane.syncSlBr();
 
 		// preload adjacent images
-		prev = (index + this.srcs.length - 1) % this.srcs.length;
-		next = (index + 1) % this.srcs.length;
+		prev = (cur + srcs.length - 1) % srcs.length;
+		next = (cur + 1) % srcs.length;
 
-		this.nextim = document.createElement('img');
-		this.nextim.src = this.srcs[next];
-		this.previm = document.createElement('img');
-		this.previm.src = this.srcs[prev];
+		nextim = document.createElement('img');
+		nextim.src = srcs[next];
+		previm = document.createElement('img');
+		previm.src = srcs[prev];
 	}
 	
-	this.link = function ()
+	pane.link = function ()
 	{
-		this.linked = true;
+		linked = true;
 	}
 	
-	this.unlink = function ()
+	pane.unlink = function ()
 	{
-		this.linked = false;
+		linked = false;
 	}
 
-	this.syncSlBr = function ()
+	pane.syncSlBr = function ()
 	{
-		slbrcur = this.slbr.getElementsByTagName('img')[0];
+		slbrcur = slbr.getElementsByTagName('img')[0];
 
 		// currently centered slide is two ahead of the first element
-		cur = (slbrcur.c + 2) % this.srcs.length;
-		if (this.cur > cur)
+		t = (slbrcur.c + 2) % srcs.length;
+		if (cur > t)
 		{
-			this.slbr.right(this.cur - cur);
+			slbr.right(cur - t);
 		}
 		else
 		{
-			this.slbr.left(cur - this.cur);
+			slbr.left(t - cur);
 		}
 	}
 
-	this.showImg = function (img)
+	pane.showImg = function (img)
 	{
 		// shade
-		if ((this.hooks) && (this.hooks['shade']) && (this.hooks['shade'] != null))
-			this.hooks['shade']();
+		pane.callHook('shade');
 
 		// make the pane visible so that dimensions are available
-		this.show();
+		pane.show();
 
 		// recompute top and left
-		t = (window.innerHeight - this.offsetHeight) / 2;
-		l = (window.innerWidth - this.offsetWidth) / 2;
-		this.moveToY(t);
-		this.moveToX(l);
+		t = (window.innerHeight - pane.offsetHeight) / 2;
+		l = (window.innerWidth - pane.offsetWidth) / 2;
+		pane.moveToY(t);
+		pane.moveToX(l);
 
 		// set new image
 		if (!img.complete)
@@ -186,16 +185,22 @@ function Photoframe (type, id, bgStyle)
 			}
 			*/
 		}
-		im = this.impn.change(img);
+		im = impn.change(img);
 
 		return im;
 	}
 
-	this.setup = function ()
+	pane.setup = function (tms, srs)
 	{
 		// get all hrefs and put in pf.srcs
 		// get all thumbs and append copies to slbrnextim.src = 'Photos/img_6581.jpg';pf.nextim = nextim
+		thumbs = tms;
+		srcs = srs;
+
+		slbr.setSlides(tms);
 	}
+
+	return pane;
 }
 // Classes ends
 
@@ -203,11 +208,7 @@ function Photoframe (type, id, bgStyle)
 
 function makePhotoframe (pane, type, id, bgStyle)
 {
-	if (!pane) pane = document.createElement('div');
-
-	Photoframe.call(pane, type, id, bgStyle);
-
-	return pane;
+	return new Photoframe(pane, type, id, bgStyle);
 }
 
 function photoframeSetup ()
@@ -225,45 +226,28 @@ function photoframeSetup ()
 
 		ims[i].c = j; // add index to the element
 		ims[i].addEventListener('click', function(e){phrame.jumpTo(this.c); e.preventDefault();}, true);
-		thumbs[j] = document.createElement('img');
-		thumbs[j].src = ims[i].childNodes[1].src;
-		thumbs[j].c = j;
-		thumbs[i].addEventListener('click', function(e){phrame.jumpTo(this.c); e.preventDefault();}, true);
-		srcs[j] = ims[i].href;
+		tms[j] = document.createElement('img');
+		tms[j].src = ims[i].childNodes[1].src;
+		tms[j].c = j;
+		tms[i].addEventListener('click', function(e){phrame.jumpTo(this.c); e.preventDefault();}, true);
+		srs[j] = ims[i].href;
 		++j;
 	}
 
-	phrame.thumbs = thumbs;
-	phrame.srcs = srcs;
-
-	phrame.slbr.setSlides(thumbs);
-
-	// im = document.createElement('img');
-	// im.src = phrame.srcs[0];
-	/*
-	phrame.impn.img.src = phrame.srcs[0];
-
-	nextim = document.createElement('img');
-	nextim.src = phrame.srcs[1];
-	phrame.nextim = nextim;
-
-	previm = document.createElement('img');
-	previm.src = phrame.srcs[phrame.srcs.length - 1];
-	phrame.previm = previm;
-
-	phrame.slbr.left(2);
-	*/
+	phrame.setup(tms, srs);
 
 	keyHandler.register(27, function(){unshade(); phrame.hide()});
 	keyHandler.register(67, function(){unshade(); phrame.hide()});
-	keyHandler.register(83, function(){shade(); phrame.jumpTo(phrame.cur)});
+	keyHandler.register(83, function(){phrame.jumpTo()});
 	keyHandler.register(37, function(){phrame.prev()});
 	keyHandler.register(39, function(){phrame.next()});
 
+	/*
 	phrame.slbr.lb.setHook('click', function(){phrame.slbr.left(4)});
 	phrame.slbr.lb.addEventListener('click', phrame.slbr.lb.hooks['click'], true);
 	phrame.slbr.rb.setHook('click', function(){phrame.slbr.right(4)});
 	phrame.slbr.rb.addEventListener('click', phrame.slbr.rb.hooks['click'], true);
+	*/
 
 	phrame.setHook('shade', shade);
 }

@@ -3,8 +3,8 @@
 file: slbrpane.js
 description: Slide Browser Pane Class
 
-version: 0.1
-last updated: 2010-10-07
+version: 0.3-1
+last updated: 2010-10-11
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -25,92 +25,89 @@ Revision History
 2010-10-03 - v0.2-1 - created
 2010-10-07 - v0.2-1 - added support for hooks
 
+2010-10-11 - v0.3-1 - rewrite of SlBrPane class using new closure idiom
 */
 
 //  3. Classes
-function SlBrPane (type, id, style)
+function SlBrPane (pane, type, id, style)
 {
 	if (!type) type = 'slbrpane';
-	Pane.call(this, type, id, style);
+	pane = new Pane(pane, type, id, style);
 
-	bgType = this.type + '-bg';
-	bgId = this.id + '-id';
-	this.addChild('bg', null, bgType, bgId);
+	bgType = pane.className + '-bg';
+	bgId = pane.id + '-id';
+	bg = new Pane(null, bgType, bgId);
+	pane.addChild('bg', bg);
 
-	lbType = this.type + '-lb';
-	lbId = this.id + '-lb';
-	this.addChild('lb', null, lbType, lbId);
+	lbType = pane.className + '-lb';
+	lbId = pane.id + '-lb';
+	lb = new Pane(null, lbType, lbId);
+	pane.addChild('lb', lb);
 	a = document.createElement('a');
 	a.href = '#';
 	a.innerHTML = '&laquo;';
-	this.lb.appendChild(a);
+	pane.lb.appendChild(a);
 
-	rbType = this.type + '-rb';
-	rbId = this.id + '-rb';
-	this.addChild('rb', null, rbType, rbId);
+	rbType = pane.className + '-rb';
+	rbId = pane.id + '-rb';
+	rb = new Pane(null, rbType, rbId);
+	pane.addChild('rb', rb);
 	a = document.createElement('a');
 	a.href = '#';
 	a.innerHTML = '&raquo;';
-	this.rb.appendChild(a);
+	pane.rb.appendChild(a);
 
-	this.slides = [];
+	lb.setHook('click', function(){pane.left(4)});
+	lb.addEventListener('click', function(){pane.left(4)});
+	rb.setHook('click', function(){pane.right(4)});
+	rb.addEventListener('click', function(){pane.right(4)});
 
-	this.setSlides = function (slides)
+	var slides = [];
+
+	pane.setSlides = function (sls)
 	{
-		this.slides = slides;
+		slides = sls;
 
-		for (i=0; i<this.slides.length; ++i)
+		for (i=0; i<slides.length; ++i)
 		{
-			this.appendChild(this.slides[i]);
+			pane.appendChild(slides[i]);
 		}
 	}
 
-	this.right = function (count)
+	pane.right = function (count)
 	{
 		if (count == null) count = 1;
 
 		for (i=0; i<count; ++i)
 		{
-			slides = this.getElementsByTagName('img');
-			tim = slides[0];
-			this.removeChild(tim);
-			this.appendChild(tim);
+			sls = pane.getElementsByTagName('img');
+			tim = sls[0];
+			pane.removeChild(tim);
+			pane.appendChild(tim);
 		}
 	}
 
-	this.left = function (count)
+	pane.left = function (count)
 	{
 		if (count == null) count = 1;
 
 		for (i=0; i<count; ++i)
 		{
-			slides = this.getElementsByTagName('img');
-			tim = slides[slides.length - 1];
-			this.removeChild(tim);
-			this.insertBefore(tim, slides[0]);
+			sls = pane.getElementsByTagName('img');
+			tim = sls[sls.length - 1];
+			pane.removeChild(tim);
+			pane.insertBefore(tim, sls[0]);
 		}
 	}
 
-	this.setLBHook = function (func)
-	{
-		this.lb.addEventListener('click', func, true);
-	}
-
-	this.setRBHook = function (func)
-	{
-		this.rb.addEventListener('click', func, true);
-	}
+	return pane;
 }
 // Classes ends
 
 //  4. Functions
 function makeSlBrPane (pane, type, id, style)
 {
-	if (!pane) pane = document.createElement('div');
-
-	SlBrPane.call(pane, type, id, style);
-
-	return pane;
+	return new SlBrPane(pane, type, id, style);
 }
 
 // Functions ends
