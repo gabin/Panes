@@ -59,9 +59,9 @@ function Photoframe (pane, type, id, bgStyle)
 	//slbrId = this.id + '-slbr';
 
 	// these lines use impn and slbr default styles
-	impn = newPane('imgpane');
+	var impn = newPane('imgpane');
 	pane.addChild('impn', impn);
-	slbr = newPane('slbrpane');
+	var slbr = newPane('slbrpane');
 	pane.addChild('slbr', slbr);
 
 	// data management
