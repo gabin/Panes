@@ -60,9 +60,9 @@ function Photoframe (pane, type, id, bgStyle)
 
 	// these lines use impn and slbr default styles
 	var impn = newPane('imgpane');
-	pane.addChild('impn', impn);
+	impn.attach(pane);
 	var slbr = newPane('slbrpane');
-	pane.addChild('slbr', slbr);
+	slbr.attach(pane);
 
 	// data management
 	var thumbs = [];
@@ -74,8 +74,8 @@ function Photoframe (pane, type, id, bgStyle)
 
 
 	// change sub panes to visible so that this pane's visibility will control them
-	pane.impn.show();
-	pane.slbr.show();
+	impn.show();
+	slbr.show();
 
 	pane.next = function ()
 	{
