@@ -58,9 +58,9 @@ function SlBrPane (pane, type, id, style)
 	pane.rb.appendChild(a);
 
 	lb.setHook('click', function(){pane.left(4)});
-	lb.addEventListener('click', function(){pane.left(4)});
+	lb.addEventListener('click', function(){lb.callHook('click')});
 	rb.setHook('click', function(){pane.right(4)});
-	rb.addEventListener('click', function(){pane.right(4)});
+	rb.addEventListener('click', function(){rb.callHook('click')});
 
 	var slides = [];
 
