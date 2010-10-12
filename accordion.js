@@ -3,8 +3,8 @@
 file: accordion.js
 description: an accordion pane
 
-version: 0.1
-last updated: 2010-10-06
+version: 0.3
+last updated: 2010-10-12
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -24,49 +24,46 @@ Revision History
 
 2010-10-08 - v0.1 created
 
+2010-10-12 - v0.3 rewrite using closure idiom
 */
 
 //  2. Globals
 // Globals ends
 
 //  3. Classes
-function Fold (type, id, style)
+function Fold (pane, type, id, style)
 {
 	if (!type) type = 'fold';
-	Pane.call(this, type, id, style);
+	pane = new Pane(pane, type, id, style);
 
 	hid = id + '-head';
 	htype = type + '-head';
-	this.head = newPane('pane', null, htype, hid);
-	this.head.attach(this);
+	head = new Pane(null, htype, hid);
+	pane.addChild(head);
 
 	bid = id + '-body';
 	btype = type + '-body';
-	this.body = newPane('pane', null, btype, bid);
-	this.body.attach(this);
+	body = new Pane(null, btype, bid);
+	pane.addChild(body);
 }
 
 function Accordion (type, id, style)
 {
 	if (!type) type = 'accordion';
-	Pane.call(this, type, id, style);
+	pane = new Pane(pane, type, id, style);
 
-	this.folds = {};
-	this.foldCount = 0;
+	folds = {};
+	foldCount = 0;
 
-	this.addFold = function (name, fold)
+	pane.addFold = function (name, fold)
 	{
 		if (!name) name = 'fold' + ++this.foldCount; 
-		if (!fold) fold = newPane('fold', null, null, name);
+		if (!fold) fold = new Fold(null, null, name);
 
-		this.folds[name] = fold;
-		this.folds[name].attach(this);
-		this.folds[name].acc = this;
-		this.folds[name].head.acc = this;
-		this.folds[name].head.foldname = name;
-		this.folds[name].body.acc = this;
-		this.folds[name].body.foldname = name;
-		this.folds[name].head.onclick = function(e) {this.acc.expand(this.foldname)}
+		folds[name] = fold;
+		folds[name].attach(pane);
+		folds[name].acc = pane;
+		// this.folds[name].head.onclick = function(e) {this.acc.expand(this.foldname)}
 	}
 
 	this.expand = function (foldname)
