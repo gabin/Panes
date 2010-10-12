@@ -17,10 +17,6 @@ TOC
  3. Classes
  	 3.1. Photoframe
  4. Functions
-	 4.1. shownext ()
-	 4.2. showprev ()
-	 4.3. showimpn ()
-	 4.4. hideimpn ()
 	 4.5. photoFrameSetup ()
  5. init
  	 

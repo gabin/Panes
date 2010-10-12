@@ -36,70 +36,112 @@ function Fold (pane, type, id, style)
 	if (!type) type = 'fold';
 	pane = new Pane(pane, type, id, style);
 
-	hid = id + '-head';
-	htype = type + '-head';
-	head = new Pane(null, htype, hid);
-	pane.addChild(head);
+	divs = pane.getElementsByTagName('div');
 
-	bid = id + '-body';
-	btype = type + '-body';
-	body = new Pane(null, btype, bid);
-	pane.addChild(body);
+	head = divs[0];
+	if (head)
+	{
+		hid = (head.id) ? head.id : (id + '-head');
+		htype = (head.className) ? head.className : (type + '-head');
+		head = new Pane(head, htype, hid);
+		pane.head = head;
+	}
+	else
+	{
+		hid = id + '-head';
+		htype = type + '-head';
+		head = new Pane(head, htype, hid);
+		pane.addChild('head', head);
+	}
+
+	body = divs[1];
+	if (body)
+	{
+		bid = (body.id) ? body.id : (id + '-body');
+		btype = (body.className) ? body.className : (type + '-body');
+		body = new Pane(body, btype, bid);
+		pane.body = body;
+	}
+	else
+	{
+		bid = id + '-body';
+		btype = type + '-body';
+		body = new Pane(body, btype, bid);
+		pane.addChild('body', body);
+	}
+
+	return pane;
 }
 
-function Accordion (type, id, style)
+function Accordion (pane, type, id, style)
 {
 	if (!type) type = 'accordion';
 	pane = new Pane(pane, type, id, style);
 
-	folds = {};
-	foldCount = 0;
+	var folds = {};
+	var foldCount = 0;
+	var showOnlyOne = false;
 
 	pane.addFold = function (name, fold)
 	{
-		if (!name) name = 'fold' + ++this.foldCount; 
-		if (!fold) fold = new Fold(null, null, name);
+		if (!name) name = pane.id + '_fold' + ++foldCount; 
+		type = (fold) ? fold.className : null;
+		newfold = (fold) ? false : true;
+
+		fold = new Fold(fold, type, name);
 
 		folds[name] = fold;
-		folds[name].attach(pane);
+		if (newfold) folds[name].attach(pane);
 		folds[name].acc = pane;
-		// this.folds[name].head.onclick = function(e) {this.acc.expand(this.foldname)}
+		folds[name].head.setHook('click', function(){pane.toggleFold(name)});
+		folds[name].head.addEventListener('click', function(){folds[name].head.callHook('click')});
 	}
 
-	this.expand = function (foldname)
+	pane.toggleFold = function (foldname)
 	{
-		// alert(this + ':  ' + this.folds[foldname]);
-		for (i in this.folds)
+		for (i in folds)
 		{
 			if (i == foldname)
 			{
 				// alert(i);
-				this.folds[i].body.show();
+				folds[i].body.toggle();
 			}
-			else this.folds[i].body.hide();
+			else if (showOnlyOne) folds[i].body.hide();
 		}
 	}
+
+
+	pane.setShowOnlyOne = function (onlyOne)
+	{
+		showOnlyOne = onlyOne;
+	}
+
+	pane.getFolds = function ()
+	{
+		return folds;
+	}
+
+	for (i=0; i<pane.childNodes.length; ++i)
+	{
+		if (pane.childNodes[i].nodeName == 'DIV')
+			pane.addFold(null, pane.childNodes[i]);
+	}
+
+	return pane;
 }
 // Classes ends
 
 //  4. Functions
 function makeFold (pane, type, id, style)
 {
-	if (!pane) pane = document.createElement('div');
-
-	Fold.call(pane, type, id, style);
-
-	return pane;
+	return new Fold(pane, type, id, style);
 }
 
 function makeAccordion (pane, type, id, style)
 {
-	if (!pane) pane = document.createElement('div');
-
-	Accordion.call(pane, type, id, style);
-
-	return pane;
+	return new Accordion(pane, type, id, style);
 }
+
 // Functions ends
 
 //  5. init

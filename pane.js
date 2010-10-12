@@ -28,6 +28,7 @@ TOC
 2010-10-07 - v0.2-1 added added hooks[], setHook() and removeHook()
 
 2010-10-11 - v0.3-1 rewrite of Pane class using new closure idiom
+2010-10-12 - v0.3-1 added toggle()
 
 */
 
@@ -90,6 +91,12 @@ function Pane (pane, type, id, style)
 	pane.hide = function ()
 	{
 		pane.style.display = 'none';
+	}
+
+	pane.toggle = function ()
+	{
+		if (pane.style.display == display) pane.style.display = 'none';
+		else pane.style.display = display;
 	}
 
 	pane.toString = function ()
