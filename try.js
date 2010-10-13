@@ -40,6 +40,7 @@ var includes = [
 	{'name':'slbrpane', 'css':1},
 	{'name':'keyhandler', 'css':0},
 	{'name':'photoframe', 'css':1},
+	{'name':'fold', 'css':1},
 	{'name':'accordion', 'css':1},
 ];
 // Constants & Config ends

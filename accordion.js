@@ -25,54 +25,13 @@ Revision History
 2010-10-08 - v0.1 created
 
 2010-10-12 - v0.3 rewrite using closure idiom
+2010-10-13 - v0.3 moved fold into its own file
 */
 
 //  2. Globals
 // Globals ends
 
 //  3. Classes
-function Fold (pane, type, id, style)
-{
-	if (!type) type = 'fold';
-	pane = new Pane(pane, type, id, style);
-
-	divs = pane.getElementsByTagName('div');
-
-	head = divs[0];
-	if (head)
-	{
-		hid = (head.id) ? head.id : (id + '-head');
-		htype = (head.className) ? head.className : (type + '-head');
-		head = new Pane(head, htype, hid);
-		pane.head = head;
-	}
-	else
-	{
-		hid = id + '-head';
-		htype = type + '-head';
-		head = new Pane(head, htype, hid);
-		pane.addChild('head', head);
-	}
-
-	body = divs[1];
-	if (body)
-	{
-		bid = (body.id) ? body.id : (id + '-body');
-		btype = (body.className) ? body.className : (type + '-body');
-		body = new Pane(body, btype, bid);
-		pane.body = body;
-	}
-	else
-	{
-		bid = id + '-body';
-		btype = type + '-body';
-		body = new Pane(body, btype, bid);
-		pane.addChild('body', body);
-	}
-
-	return pane;
-}
-
 function Accordion (pane, type, id, style)
 {
 	if (!type) type = 'accordion';
