@@ -4,7 +4,7 @@ file: accordion.js
 description: an accordion pane
 
 version: 0.3
-last updated: 2010-10-12
+last updated: 2010-10-13
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -26,6 +26,7 @@ Revision History
 
 2010-10-12 - v0.3 rewrite using closure idiom
 2010-10-13 - v0.3 moved fold into its own file
+                  added support for pulldown
 */
 
 //  2. Globals
@@ -78,6 +79,14 @@ function Accordion (pane, type, id, style)
 	pane.getFolds = function ()
 	{
 		return folds;
+	}
+
+	pane.setPullDown = function (pd)
+	{
+		for (i in folds)
+		{
+			folds[i].setPullDown(pd);
+		}
 	}
 
 	for (i=0; i<pane.childNodes.length; ++i)
