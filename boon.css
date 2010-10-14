@@ -217,7 +217,7 @@ body {
 
 #navbar ul li a:hover {
 	font-weight: bold;
-	background-color: #78;
+	/*background-color: #787878;*/
 	color: #1a1a1a;
 	text-shadow: #ffffff 0px 0px 6px;
 	/*border-left: 2px solid #aaaaaa;*/
@@ -281,7 +281,7 @@ body {
 	color: #ffffff;
 	margin: 0px;
 	padding: 2px;
-	text-indent: 0px:
+	text-indent: 0px;
 }
 
 #main-text h2 {
@@ -291,7 +291,7 @@ body {
 	color: #ffffff;
 	margin: 0px;
 	padding: 2px;
-	text-indent: 0px:
+	text-indent: 0px;
 }
 
 #main-text h3 {
@@ -301,7 +301,7 @@ body {
 	color: #ffffff;
 	margin: 0px;
 	padding: 2px;
-	text-indent: 0px:
+	text-indent: 0px;
 }
 
 #main-text p {

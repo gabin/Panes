@@ -109,7 +109,7 @@ function Photoframe (pane, type, id, bgStyle)
 
 	pane.jumpTo = function (index)
 	{
-		if (index) cur = index;
+		if (typeof index == 'number') cur = index;
 
 		im = document.createElement('img');
 		im.src = srcs[cur];
@@ -235,8 +235,8 @@ function photoframeSetup ()
 	keyHandler.register(27, function(){unshade(); phrame.hide()});
 	keyHandler.register(67, function(){unshade(); phrame.hide()});
 	keyHandler.register(83, function(){phrame.jumpTo()});
-	keyHandler.register(37, function(){phrame.prev()});
-	keyHandler.register(39, function(){phrame.next()});
+	keyHandler.register(37, function(e){phrame.prev(); e.preventDefault()});
+	keyHandler.register(39, function(e){phrame.next(); e.preventDefault()});
 
 	/*
 	phrame.slbr.lb.setHook('click', function(){phrame.slbr.left(4)});

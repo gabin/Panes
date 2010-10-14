@@ -4,7 +4,7 @@ file: slbrpane.js
 description: Slide Browser Pane Class
 
 version: 0.3-1
-last updated: 2010-10-11
+last updated: 2010-10-14
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -26,6 +26,7 @@ Revision History
 2010-10-07 - v0.2-1 - added support for hooks
 
 2010-10-11 - v0.3-1 - rewrite of SlBrPane class using new closure idiom
+2010-10-14 - v0.3-1 - addEventListener() calls corrected to use 3 arguments
 */
 
 //  3. Classes
@@ -41,7 +42,7 @@ function SlBrPane (pane, type, id, style)
 
 	lbType = pane.className + '-lb';
 	lbId = pane.id + '-lb';
-	lb = new Pane(null, lbType, lbId);
+	var lb = new Pane(null, lbType, lbId);
 	pane.addChild('lb', lb);
 	a = document.createElement('a');
 	a.href = '#';
@@ -50,7 +51,7 @@ function SlBrPane (pane, type, id, style)
 
 	rbType = pane.className + '-rb';
 	rbId = pane.id + '-rb';
-	rb = new Pane(null, rbType, rbId);
+	var rb = new Pane(null, rbType, rbId);
 	pane.addChild('rb', rb);
 	a = document.createElement('a');
 	a.href = '#';
@@ -58,9 +59,9 @@ function SlBrPane (pane, type, id, style)
 	pane.rb.appendChild(a);
 
 	lb.setHook('click', function(){pane.left(4)});
-	lb.addEventListener('click', function(){lb.callHook('click')});
+	lb.addEventListener('click', function(e){lb.callHook('click'); e.preventDefault()}, true);
 	rb.setHook('click', function(){pane.right(4)});
-	rb.addEventListener('click', function(){rb.callHook('click')});
+	rb.addEventListener('click', function(e){rb.callHook('click'); e.preventDefault()}, true);
 
 	var slides = [];
 
