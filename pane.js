@@ -69,18 +69,21 @@ function Pane (pane, type, id, style)
 		child.attach(pane);
 	}
 
-	pane.attach = function (parent)
+	pane.attach = function (p)
 	{
 		if (pane.parentElement)
 			pane.detach();
 
-		parent.appendChild(pane);
+		p.appendChild(pane);
 	}
 
 	pane.detach = function ()
 	{
-		if (parent = pane.parentElement)
-			parent.removeChild(pane);
+		 p = pane.parentElenemt;
+		if (p)
+		{
+			p.removeChild(pane);
+		}
 	}
 
 	pane.show = function ()
