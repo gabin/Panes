@@ -165,7 +165,7 @@ function Photoframe (pane, type, id, bgStyle)
 
 		// recompute top and left
 		t = (window.innerHeight - pane.offsetHeight) / 2;
-		l = (window.innerWidth - pane.offsetWidth) / 2;
+		l = (document.body.offsetWidth - pane.offsetWidth) / 2;
 		pane.moveToY(t);
 		pane.moveToX(l);
 
@@ -235,8 +235,8 @@ function photoframeSetup ()
 	keyHandler.register(27, function(){unshade(); phrame.hide()});
 	keyHandler.register(67, function(){unshade(); phrame.hide()});
 	keyHandler.register(83, function(){phrame.jumpTo()});
-	keyHandler.register(37, function(e){phrame.prev(); e.preventDefault()});
-	keyHandler.register(39, function(e){phrame.next(); e.preventDefault()});
+	keyHandler.register(37, function(){phrame.prev()});
+	keyHandler.register(39, function(){phrame.next()});
 
 	/*
 	phrame.slbr.lb.setHook('click', function(){phrame.slbr.left(4)});
