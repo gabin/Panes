@@ -164,8 +164,8 @@ function Photoframe (pane, type, id, bgStyle)
 		pane.show();
 
 		// recompute top and left
-		t = (window.innerHeight - pane.offsetHeight) / 2;
-		l = (document.body.offsetWidth - pane.offsetWidth) / 2;
+		t = ((window.innerHeight - pane.offsetHeight) / 2) + window.pageYOffset;
+		l = ((document.body.offsetWidth - pane.offsetWidth) / 2) + window.pageXOffset;
 		pane.moveToY(t);
 		pane.moveToX(l);
 

@@ -79,7 +79,7 @@ function Pane (pane, type, id, style)
 
 	pane.detach = function ()
 	{
-		 p = pane.parentElenemt;
+		p = pane.parentElement;
 		if (p)
 		{
 			p.removeChild(pane);

@@ -3,8 +3,8 @@
 file: msgpane.js
 description: MsgPane Class
 
-version: 0.2-1
-last updated: 2010-10-03
+version: 0.3-1
+last updated: 2010-10-16
 
 author: gabin kattukaran <gabin@kattukaran.in>
 
@@ -25,33 +25,37 @@ Revision History
 
 2010-10-03 - v0.2-1 - created
 
+2010-10-16 - v0.2-1 - rewrite using closure idiom
 */
 
 //  3. Classes
-function MsgPane (type, id, style)
+function MsgPane (pane, type, id, style)
 {
 	if (!type) type = 'msgpane';
-	Pane.call(this, type, id, style);
+	pane = new Pane(pane, type, id, style);
 
-	this.msg = document.createElement('p');
-	this.appendChild(this.msg);
+	var msg = document.createElement('p');
+	pane.appendChild(msg);
+
+	pane.setMsg = function (txt)
+	{
+		msg.innerHTML = txt;
+	}
+
+	return pane;
 }
 // Classes ends
 
 //  4. Functions
 function makeMsgPane (pane, type, id, style)
 {
-	if (!pane) pane = document.createElement('div');
-
-	MsgPane.call(pane, type, id, style);
-
-	return pane;
+	return new MsgPane(pane, type, id, style);
 }
 
 function pnalert (txt)
 {
-	alpn = makeMsgPane();
-	alpn.msg.innerHTML = txt;
+	alpn = new MsgPane();
+	alpn.setMsg(txt);
 	alpn.button = document.createElement('input');
 	alpn.button.type = 'button';
 	alpn.button.value = 'OK';
