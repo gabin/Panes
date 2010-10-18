@@ -35,10 +35,12 @@ function SlBrPane (pane, type, id, style)
 	if (!type) type = 'slbrpane';
 	pane = new Pane(pane, type, id, style);
 
+	/*
 	bgType = pane.className + '-bg';
 	bgId = pane.id + '-id';
 	bg = new Pane(null, bgType, bgId);
 	pane.addChild('bg', bg);
+	*/
 
 	lbType = pane.className + '-lb';
 	lbId = pane.id + '-lb';

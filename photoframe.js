@@ -56,8 +56,10 @@ function Photoframe (pane, type, id, bgStyle)
 
 	// these lines use impn and slbr default styles
 	var impn = newPane('imgpane');
+	impn.showBG();
 	impn.attach(pane);
 	var slbr = newPane('slbrpane');
+	slbr.showBG();
 	slbr.attach(pane);
 
 	// data management

@@ -49,6 +49,7 @@ function Pane (pane, type, id, style)
 	var that = pane;
 	var display = 'block';
 	var hooks = null;
+	var bg = null;
 
 	if (!type) type = 'pane';
 	if (!pane.className) pane.className = type;
@@ -174,6 +175,22 @@ function Pane (pane, type, id, style)
 	{
 		if ((hooks) && (hooks[name]) && (hooks[name] != null))
 			hooks[name]();
+	}
+
+	pane.showBG = function ()
+	{
+		bg = document.createElement('div');
+		bg.id = id + '-bg';
+		bg.className = pane.className + '-bg';
+
+		pane.appendChild(bg);
+	}
+
+	pane.hideBG = function ()
+	{
+		pane.removeChild(bg);
+
+		bg = null;
 	}
 
 	return pane;

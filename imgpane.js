@@ -50,10 +50,12 @@ function ImgPane (pane, type, id, bgStyle, fgStyle)
 	if (!type) type = 'imgpane';
 	pane = new Pane(pane, type, id);
 
+	/*
 	bgType = pane.className + '-bg';
 	bgId = pane.id + '-bg';
 	bg = new Pane(null, bgType, bgId, bgStyle);
 	pane.addChild('bg', bg);
+	*/
 
 	pane.img = document.createElement('img');
 	pane.appendChild(pane.img);

@@ -8,16 +8,16 @@
 	height: 346px;
 	width: 606px;
 	margin: auto;
+	border: 3px solid #363636;
 }
 
 .imgpane-bg
 {
 	position: absolute;
 	margin: 0 auto;
-	height: 340px;
-	width: 600px;
+	height: 100%;
+	width: 100%;
 	background-color: #1a1a1a;
-	border: 3px solid #363636;
 	opacity: 0.8;
 }
 
