@@ -54,7 +54,6 @@ function Accordion (pane, type, id, style)
 		if (newfold) folds[name].attach(pane);
 		folds[name].acc = pane;
 		folds[name].head.setHook('click', function(){pane.toggleFold(name)});
-		folds[name].head.addEventListener('click', function(){folds[name].head.callHook('click')},true);
 	}
 
 	pane.toggleFold = function (foldname)

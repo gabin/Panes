@@ -76,6 +76,8 @@ function Fold (pane, type, id, style, pullDown)
 		pullDown = !pullDown;
 	}
 
+	head.addEventListener('click', function(){head.callHook('click')}, true);
+
 	pane.setPullDown = function (pd)
 	{
 		// oldalert(pullDown + ' ' + pd);
