@@ -1,39 +1,13 @@
 .slbrpane
 {
 	position: relative;
-	/*background-color: transparent;*/
 	height: 76px;
 	width: 606px;
 	margin: 0 auto;
 	overflow: hidden;
 	display: none;
-	/*z-index: 2;*/
 	text-align: center;
-	/*border: 3px solid #363636;*/
 }
-
-.slbrpane img
-{
-	clear: none;
-	position: relative;
-	max-height: 66px;
-	margin: 5px;
-	cursor: pointer;
-	/*z-index: 3;*/
-}
-
-/*
-.slbrpane-bg
-{
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	width: 100%;
-	height: 100%;
-	background-color: #1a1a1a;
-	opacity: 0.8;
-}
-*/
 
 .slbrpane-button
 {
@@ -42,7 +16,6 @@
 	width: 20px;
 	background-color: transparent;
 	margin: 3px;
-	/*z-index: 3;*/
 }
 
 .slbrpane-lb
@@ -53,6 +26,15 @@
 .slbrpane-rb
 {
 	float: right;
+}
+
+.slbrpane img
+{
+	clear: none;
+	position: relative;
+	max-height: 66px;
+	margin: 5px;
+	cursor: pointer;
 }
 
 .slbrpane a
@@ -70,22 +52,3 @@
 {
 	color: #6699ff;
 }
-
-
-/*
-.slbrpane-rb a
-{
-	display: block;
-	height: 100%;
-	width: 100%;
-	padding-top: 10px;
-	font-size: 2.5em;
-	color: #000000;
-	text-decoration: none;
-}
-
-.slbrpane-rb a:hover
-{
-	color: #6699ff;
-}
-*/
