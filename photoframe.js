@@ -43,10 +43,10 @@ var phrame;
 // Globals ends
 
 //  3. Classes
-function Photoframe (pane, type, id, bgStyle)
+function Photoframe (pane, pnType, pnId, pnStyle)
 {
-	if (!type) type = 'photoframe';
-	pane = new Pane(pane, type, id, bgStyle);
+	if (!pnType) pnType = 'photoframe';
+	pane = new Pane(pane, pnType, pnId, pnStyle);
 
 	// use the following lines if photoframe.css is used to set styles for impn & slbr
 	//impnType = this.type + '-impn';
@@ -215,7 +215,7 @@ function photoframeSetup ()
 
 	initShade();
 
-	ims = document.getElementsByClassName('pane');
+	ims = document.getElementsByClassName('phrame');
 	j = 0;
 	for (i=0; i<ims.length; ++i)
 	{

@@ -55,8 +55,10 @@ function Pane (pane, pnType, pnId, pnStyle)
 	if (!pnType) pnType = 'pane';
 	type = pnType;
 
-	if (!pnStyle) pnSstyle = 'def';
-	if (!pane.className) pane.className = pnStyle;
+	if (!pnStyle) pnStyle = 'def';
+	
+	if (pnStyle) pane.className += pnStyle;
+	//if (!pane.className) pane.className = pnStyle;
 
 	if (!Pane.nPanes[type]) Pane.nPanes[type] = 0;
 
@@ -185,7 +187,9 @@ function Pane (pane, pnType, pnId, pnStyle)
 	{
 		bg = document.createElement('div');
 		bg.id = pane.id + '-bg';
-		bg.className = pane.type() + '-bg bg';
+		bg.classList.add(pane.type() + '-bg');
+		bg.classList.add('bg');
+		//bg.className = pane.type() + '-bg bg';
 
 		pane.appendChild(bg);
 	}
