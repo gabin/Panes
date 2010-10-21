@@ -55,11 +55,9 @@ function Photoframe (pane, type, id, bgStyle)
 	//slbrId = this.id + '-slbr';
 
 	// these lines use impn and slbr default styles
-	var impn = newPane('imgpane');
-	impn.showBG();
+	var impn = new ImgPane(null, null, null, 'imgpane border');
 	impn.attach(pane);
-	var slbr = newPane('slbrpane');
-	slbr.showBG();
+	var slbr = new SlBrPane(null, null, null, 'slbrpane border');
 	slbr.attach(pane);
 
 	// data management
@@ -211,7 +209,8 @@ function makePhotoframe (pane, type, id, bgStyle)
 
 function photoframeSetup ()
 {
-	phrame = makePhotoframe();
+	phrame = new Photoframe(null, null, null, 'photoframe popup');
+	phrame.showBG();
 	phrame.attach(document.body);
 
 	initShade();

@@ -42,7 +42,7 @@ var makefns = {}; // make functions
 
 //  3. Classes
 
-function Pane (pane, type, id, style)
+function Pane (pane, pnType, pnId, pnStyle)
 {
 	if (!pane) pane = document.createElement('div');
 
@@ -50,18 +50,22 @@ function Pane (pane, type, id, style)
 	var display = 'block';
 	var hooks = null;
 	var bg = null;
+	var type;
 
-	if (!type) type = 'pane';
-	if (!pane.className) pane.className = type;
+	if (!pnType) pnType = 'pane';
+	type = pnType;
+
+	if (!pnStyle) pnSstyle = 'def';
+	if (!pane.className) pane.className = pnStyle;
 
 	if (!Pane.nPanes[type]) Pane.nPanes[type] = 0;
 
-	if (!id) id = type + ++(Pane.nPanes[type]);
-	if (!pane.id) pane.id = id;
+	if (!pnId) pnId = type + ++(Pane.nPanes[type]);
+	if (!pane.id) pane.id = pnId;
 
-	pane.which = function ()
+	pane.type = function ()
 	{
-		return pane;
+		return type;
 	}
 
 	pane.addChild = function (name, child)
@@ -180,8 +184,8 @@ function Pane (pane, type, id, style)
 	pane.showBG = function ()
 	{
 		bg = document.createElement('div');
-		bg.id = id + '-bg';
-		bg.className = pane.className + '-bg';
+		bg.id = pane.id + '-bg';
+		bg.className = pane.type() + '-bg bg';
 
 		pane.appendChild(bg);
 	}

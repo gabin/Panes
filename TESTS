@@ -1,0 +1,7 @@
+2010-10-21
++ have common style for backgrounds
+	+ separate class from type
++ have common style for popups
++ fix slbrpane, imgpane, photoframe, fold, accordion. msgpane to work with
+  new pane interface (separated type and class)
++ have common style for embeds

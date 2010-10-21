@@ -45,10 +45,10 @@ var defImgPad = 200;
 class: ImgPane
 description: Image Pane
 */
-function ImgPane (pane, type, id, bgStyle, fgStyle)
+function ImgPane (pane, pnType, pnId, pnStyle)
 {
-	if (!type) type = 'imgpane';
-	pane = new Pane(pane, type, id);
+	if (!pnType) pnType = 'imgpane';
+	pane = new Pane(pane, pnType, pnId, pnStyle);
 
 	/*
 	bgType = pane.className + '-bg';

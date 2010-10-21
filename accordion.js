@@ -33,10 +33,10 @@ Revision History
 // Globals ends
 
 //  3. Classes
-function Accordion (pane, type, id, style)
+function Accordion (pane, pnType, pnId, pnStyle)
 {
-	if (!type) type = 'accordion';
-	pane = new Pane(pane, type, id, style);
+	if (!pnType) pnType = 'accordion';
+	pane = new Pane(pane, pnType, pnId, pnStyle);
 
 	var folds = {};
 	var foldCount = 0;
@@ -45,10 +45,11 @@ function Accordion (pane, type, id, style)
 	pane.addFold = function (name, fold)
 	{
 		if (!name) name = pane.id + '_fold' + ++foldCount; 
-		type = (fold) ? fold.className : null;
+		// fType = (fold) ? fold.className : null;
 		newfold = (fold) ? false : true;
 
-		fold = new Fold(fold, type, name);
+		// fold = new Fold(fold, fType, name);
+		fold = new Fold(fold, null, name, 'fold');
 
 		folds[name] = fold;
 		if (newfold) folds[name].attach(pane);

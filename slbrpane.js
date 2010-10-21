@@ -30,10 +30,10 @@ Revision History
 */
 
 //  3. Classes
-function SlBrPane (pane, type, id, style)
+function SlBrPane (pane, pnType, pnId, pnStyle)
 {
-	if (!type) type = 'slbrpane';
-	pane = new Pane(pane, type, id, style);
+	if (!pnType) pnType = 'slbrpane';
+	pane = new Pane(pane, pnType, pnId, pnStyle);
 
 	/*
 	bgType = pane.className + '-bg';
@@ -42,18 +42,20 @@ function SlBrPane (pane, type, id, style)
 	pane.addChild('bg', bg);
 	*/
 
-	lbType = pane.className + '-lb';
+	lbType = pane.type() + '-lb';
 	lbId = pane.id + '-lb';
-	var lb = new Pane(null, lbType, lbId);
+	lbstyle = pane.type() + '-button' + ' ' + pane.type() + '-lb';
+	var lb = new Pane(null, lbType, lbId, lbstyle);
 	pane.addChild('lb', lb);
 	a = document.createElement('a');
 	a.href = '#';
 	a.innerHTML = '&laquo;';
 	pane.lb.appendChild(a);
 
-	rbType = pane.className + '-rb';
+	rbType = pane.type() + '-rb';
 	rbId = pane.id + '-rb';
-	var rb = new Pane(null, rbType, rbId);
+	rbstyle = pane.type() + '-button' + ' ' + pane.type() + '-rb';
+	var rb = new Pane(null, rbType, rbId, rbstyle);
 	pane.addChild('rb', rb);
 	a = document.createElement('a');
 	a.href = '#';

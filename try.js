@@ -34,7 +34,7 @@ Revision History
 //  1. Constants & Config
 var includes = [
 	{'name':'shade', 'css':1},
-	{'name':'pane', 'css':0},
+	{'name':'pane', 'css':1},
 	{'name':'msgpane', 'css':1},
 	{'name':'imgpane', 'css':1},
 	{'name':'slbrpane', 'css':1},

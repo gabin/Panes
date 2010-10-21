@@ -1,16 +1,17 @@
 .imgpane
 {
 	position: relative;
-	background-color: transparent;
+	/*background-color: transparent;*/
 	display: none;
 	text-align: center;
-	z-index: 2;
+	/*z-index: 2;*/
 	height: 346px;
 	width: 606px;
 	margin: auto;
-	border: 3px solid #363636;
+	/*border: 3px solid #363636;*/
 }
 
+/*
 .imgpane-bg
 {
 	position: absolute;
@@ -20,6 +21,7 @@
 	background-color: #1a1a1a;
 	opacity: 0.8;
 }
+*/
 
 .imgpane img
 {

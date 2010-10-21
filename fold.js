@@ -25,44 +25,48 @@ Revision History
 2010-10-13 - v0.3 moved class from accordion.js
 */
 //  3. Classes
-function Fold (pane, type, id, style, pullDown)
+function Fold (pane, pnType, pnId, pnStyle, pullDown)
 {
-	if (!type) type = 'fold';
+	if (!pnType) pnType = 'fold';
 	if (pullDown != true) pullDown = false;
 
-	pane = new Pane(pane, type, id, style);
+	pane = new Pane(pane, pnType, pnId, pnStyle);
 
 	divs = pane.getElementsByTagName('div');
 
 	var head = divs[0];
 	if (head)
 	{
-		hid = (head.id) ? head.id : (id + '-head');
-		htype = (head.className) ? head.className : (type + '-head');
-		head = new Pane(head, htype, hid);
+		hid = (head.id) ? head.id : (pane.id + '-head');
+		htype = pane.type() + '-head';
+		hstyle = head.className + ' ' + (pane.type() + '-head');
+		head = new Pane(head, htype, hid, hstyle);
 		pane.head = head;
 	}
 	else
 	{
-		hid = id + '-head';
-		htype = type + '-head';
-		head = new Pane(head, htype, hid);
+		hid = pane.id + '-head';
+		htype = pane.type() + '-head';
+		hstyle = pane.type() + '-head';
+		head = new Pane(head, htype, hid, hstyle);
 		pane.addChild('head', head);
 	}
 
 	var body = divs[1];
 	if (body)
 	{
-		bid = (body.id) ? body.id : (id + '-body');
-		btype = (body.className) ? body.className : (type + '-body');
-		body = new Pane(body, btype, bid);
+		bid = (body.id) ? body.id : (pane.id + '-body');
+		btype = pane.type() + '-body';
+		bstyle = body.className + ' ' + (pane.type() + '-body');
+		body = new Pane(body, btype, bid, bstyle);
 		pane.body = body;
 	}
 	else
 	{
-		bid = id + '-body';
-		btype = type + '-body';
-		body = new Pane(body, btype, bid);
+		bid = pane.id + '-body';
+		btype = pane.type() + '-body';
+		bstyle = pane.type() + '-body';
+		body = new Pane(body, btype, bid, bstyle);
 		pane.addChild('body', body);
 	}
 

@@ -1,0 +1,33 @@
+.def
+{
+	position: relative;
+}
+
+.embed
+{
+	z-index: 1;
+}
+
+.popup
+{
+	z-index: 3;
+	background-color: transparent;
+}
+
+.border
+{
+	border: 3px solid #6699ff;
+}
+
+.bg
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+	background-color: black;
+	opacity: 0.85;
+}
+

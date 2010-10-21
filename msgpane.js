@@ -29,10 +29,10 @@ Revision History
 */
 
 //  3. Classes
-function MsgPane (pane, type, id, style)
+function MsgPane (pane, pnType, pnId, pnStyle)
 {
-	if (!type) type = 'msgpane';
-	pane = new Pane(pane, type, id, style);
+	if (!pnType) pnType = 'msgpane';
+	pane = new Pane(pane, pnType, pnId, pnStyle);
 
 	var msg = document.createElement('p');
 	pane.appendChild(msg);
@@ -54,7 +54,8 @@ function makeMsgPane (pane, type, id, style)
 
 function pnalert (txt)
 {
-	alpn = new MsgPane();
+	alpn = new MsgPane(null, null, null, 'msgpane popup border');
+	alpn.showBG();
 	alpn.setMsg(txt);
 	alpn.button = document.createElement('input');
 	alpn.button.type = 'button';
