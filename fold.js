@@ -84,7 +84,6 @@ function Fold (pane, pnType, pnId, pnStyle, pullDown)
 
 	pane.setPullDown = function (pd)
 	{
-		// oldalert(pullDown + ' ' + pd);
 		if (pd != true) pd = false;
 
 		if (pullDown != pd) togglePullDown();

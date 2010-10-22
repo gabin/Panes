@@ -36,8 +36,6 @@ Revision History
 var phrame;
 var tms = [];
 var srs = [];
-// var curim;
-// var impn;
 
 var phrame;
 // Globals ends
@@ -48,13 +46,6 @@ function Photoframe (pane, pnType, pnId, pnStyle)
 	if (!pnType) pnType = 'photoframe';
 	pane = new Pane(pane, pnType, pnId, pnStyle);
 
-	// use the following lines if photoframe.css is used to set styles for impn & slbr
-	//impnType = this.type + '-impn';
-	//impnId = this.id + '-impn';
-	//slbrType = this.type + '-slbr';
-	//slbrId = this.id + '-slbr';
-
-	// these lines use impn and slbr default styles
 	var impn = new ImgPane(null, null, null, 'imgpane border');
 	impn.attach(pane);
 	var slbr = new SlBrPane(null, null, null, 'slbrpane border');
@@ -170,17 +161,6 @@ function Photoframe (pane, pnType, pnId, pnStyle)
 		pane.moveToX(l);
 
 		// set new image
-		if (!img.complete)
-		{
-			// alert('yow!');
-			/*
-			img.onload = function()
-			{
-				imgload(this.impn, img);
-				img = 
-			}
-			*/
-		}
 		im = impn.change(img);
 
 		return im;
@@ -239,102 +219,8 @@ function photoframeSetup ()
 	keyHandler.register(37, function(){phrame.prev()});
 	keyHandler.register(39, function(){phrame.next()});
 
-	/*
-	phrame.slbr.lb.setHook('click', function(){phrame.slbr.left(4)});
-	phrame.slbr.lb.addEventListener('click', phrame.slbr.lb.hooks['click'], true);
-	phrame.slbr.rb.setHook('click', function(){phrame.slbr.right(4)});
-	phrame.slbr.rb.addEventListener('click', phrame.slbr.rb.hooks['click'], true);
-	*/
-
 	phrame.setHook('shade', shade);
 }
-
-// old
-/*
-function shownext ()
-{
-	curim = ++curim % srcs.length;
-	showimpn(srcs[curim]);
-}
-
-function showprev ()
-{
-	curim = (curim + srcs.length - 1) % srcs.length;
-	showimpn(srcs[curim]);
-}
-
-function showimpn (src)
-{
-	shade();
-	impn.img.onload = function ()
-	{
-		// first show. then compute sizes. this is to avoid heights being set to zero.
-		impn.show();
-		// impn.bg.resize({'width':impn.img.width+defImgPad, 'height':impn.img.height+defImgPad});
-		l = (window.innerWidth - (impn.slbr.offsetWidth)) / 2;
-		t = (window.innerHeight - (impn.bg.offsetHeight + impn.slbr.offsetHeight)) / 2;
-		impn.style.left = l.toFixed(0) + 'px';
-		impn.style.top = '20%';
-		// impn.style.top = t.toFixed(0) + 'px';
-		impn.img.style.top = -(impn.img.height + (impn.bg.offsetHeight - impn.img.height)/2 + 3) + 'px';
-		//impn.brbg.style.top = -(impn.img.height) + 'px';
-		impn.slbr.style.top = -(impn.img.height) + 'px';
-	}
-
-	impn.img.onabort = function ()
-	{
-		alert('error loading file');
-	}
-
-	impn.img.onerror = impn.img.onabort;
-
-	impn.img.src = src;
-	if (impn.img.complete) impn.img.onload();
-
-	// key handlers come here
-	keyHandler.unregister(83);
-	keyHandler.register(37, showprev);
-	keyHandler.register(39, shownext);
-	keyHandler.register(27, hideimpn);
-	keyHandler.register(67, hideimpn);
-}
-
-function hideimpn ()
-{
-	impn.hide();
-	unshade();
-	// unregister keyhandlers come here
-	keyHandler.unregister(37);
-	keyHandler.unregister(39);
-	keyHandler.unregister(27);
-	keyHandler.unregister(67);
-	keyHandler.register(83, shownext);
-	--curim;
-}
-
-function photoFrameSetup ()
-{
-	initShade();
-	impn = makeImgPane();
-	impn.attach(document.body);
-
-	// add event handlers here
-	keyHandler.register(83, shownext);
-
-	ims = document.getElementsByClassName('pane');
-	j = 0;
-	for (i=0; i<ims.length; ++i)
-	{
-		if (ims[i].nodeName != 'A') break; // discard if element is not an anchor
-		ims[i].c = j; // add index to the element
-		ims[i].addEventListener('click', function(e){curim=(this.c)-1;shownext(); e.preventDefault();}, true);
-		links[j] = ims[i];
-		srcs[j++] = ims[i].href;
-	}
-
-	curim = -1;
-}
-*/
 
 // Functions ends
 

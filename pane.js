@@ -57,8 +57,7 @@ function Pane (pane, pnType, pnId, pnStyle)
 
 	if (!pnStyle) pnStyle = 'def';
 	
-	if (pnStyle) pane.className += pnStyle;
-	//if (!pane.className) pane.className = pnStyle;
+	if (pnStyle) pane.className += ' ' + pnStyle;
 
 	if (!Pane.nPanes[type]) Pane.nPanes[type] = 0;
 
@@ -163,7 +162,6 @@ function Pane (pane, pnType, pnId, pnStyle)
 
 		if ((typeof hooks[name] === 'undefined') || (hooks[name] != null))
 			hooks[name] = func;
-		// this.addEventListener(name, this.hooks[name], true);
 	}
 
 	pane.removeHook = function (name)
@@ -189,7 +187,6 @@ function Pane (pane, pnType, pnId, pnStyle)
 		bg.id = pane.id + '-bg';
 		bg.classList.add(pane.type() + '-bg');
 		bg.classList.add('bg');
-		//bg.className = pane.type() + '-bg bg';
 
 		pane.appendChild(bg);
 	}

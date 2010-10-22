@@ -45,10 +45,8 @@ function Accordion (pane, pnType, pnId, pnStyle)
 	pane.addFold = function (name, fold)
 	{
 		if (!name) name = pane.id + '_fold' + ++foldCount; 
-		// fType = (fold) ? fold.className : null;
 		newfold = (fold) ? false : true;
 
-		// fold = new Fold(fold, fType, name);
 		fold = new Fold(fold, null, name, 'fold');
 
 		folds[name] = fold;
@@ -63,7 +61,6 @@ function Accordion (pane, pnType, pnId, pnStyle)
 		{
 			if (i == foldname)
 			{
-				// alert(i);
 				folds[i].body.toggle();
 			}
 			else if (showOnlyOne) folds[i].body.hide();
