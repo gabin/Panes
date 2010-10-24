@@ -32,6 +32,8 @@ Revision History
 */
 
 //  1. Constants & Config
+var BASEDIR = 'Panes';
+
 var includes = [
 	{'name':'shade', 'css':1},
 	{'name':'pane', 'css':1},
@@ -80,13 +82,13 @@ for (i=0; i<includes.length; ++i)
 		css = document.createElement('link');
 		css.rel = 'stylesheet';
 		css.type = 'text/css';
-		css.href = includes[i].name + '.css';
+		css.href = BASEDIR + '/' + includes[i].name + '.css';
 
 		head.appendChild(css);
 	}
 	script = document.createElement('script');
 	script.type = 'text/javascript';
-	script.src = includes[i].name + '.js';
+	script.src = BASEDIR + '/' + includes[i].name + '.js';
 
 	head.appendChild(script);
 }
