@@ -5,3 +5,5 @@
 + fix slbrpane, imgpane, photoframe, fold, accordion. msgpane to work with
   new pane interface (separated type and class)
 + have common style for embeds
+
+--- development halted on this branch. only debugging allowed
